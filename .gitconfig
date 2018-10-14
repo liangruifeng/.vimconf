@@ -6,3 +6,6 @@
 	last = log -1
 [core]
 	editor = vim
+[user]
+	email = liang.ruif3ng@gmail.com
+	name = liang ruifeng
