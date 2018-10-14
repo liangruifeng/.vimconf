@@ -1,0 +1,8 @@
+[alias]
+	st = status
+	co = checkout
+        ci = commit
+	br = branch
+	last = log -1
+[core]
+	editor = vim
