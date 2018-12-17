@@ -9,38 +9,39 @@ endif
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-Plugin 'VundleVim/Vundle.vim'
+" vim 插件管理工具
+"Plugin 'VundleVim/Vundle.vim'
+
+" 自动补全工具
 "Plugin 'Valloric/YouCompleteMe'
-"Plugin 'marijnh/tern_for_vim'
-"Plugin 'mattn/emmet-vim'
-"Plugin 'hail2u/vim-css3-syntax'
-"Plugin 'heavenshell/vim-jsdoc'
+
 " 美化状态栏 和 主题
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'othree/yajs.vim'
+
+" 配色方案
 Plugin 'crusoexia/vim-monokai'
-Plugin 'Yggdroot/indentLine'
-Plugin 'scrooloose/nerdtree'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'scrooloose/nerdcommenter'
 Plugin 'flazz/vim-colorschemes'
-"Plugin 'vim-syntastic/syntastic'
-"Plugin 'fatih/vim-go'
+
+" 显示树形目录
+Plugin 'scrooloose/nerdtree'
+
+" python pep8检查
+Plugin 'nvie/vim-flake8'
 
 call vundle#end()
 filetype plugin indent on
 
 syntax enable
-syntax on       " 开启语法高亮
+syntax on         " 开启语法高亮
 set t_Co=256
 colorscheme monokai        " murphy 设置配色方案i
 set background=dark
 
 set cindent
-set hlsearch               " 搜索逐字符高亮
+set hlsearch      " 搜索逐字符高亮
 set incsearch
-set showmatch              " 高亮显示匹配的括号
+set showmatch     " 高亮显示匹配的括号
 set cursorline    " 高亮显示当前 - 行
 
 set nu
@@ -61,12 +62,6 @@ set guioptions-=R
 "let g:airline#extensions#tabline#left_alt_sep = '|'
 "let g:airline_powerline_fonts=1
 
-set pastetoggle=<F9>
-set completeopt-=preview
-autocmd BufReadPost * if line("'\"") && line("'\"") <= line("$") | exe "normal `\"" | endif
-filetype off                  " required
-syntax enable
-
 "F2开启和关闭树"
 map <F2> :NERDTreeToggle<CR>
 let NERDTreeChDirMode=1
@@ -77,39 +72,27 @@ let NERDTreeIgnore=['\~$', '\.pyc$', '\.swp$']
 "窗口大小"
 let NERDTreeWinSize=25
 
-map <F5> :call CompileRunGcc()<CR>
-func! CompileRunGcc()
-    ¦   exec "w"
-    ¦   if &filetype == 'c'
-    ¦   ¦   ¦   exec '!g++ % -o %<'
-    ¦   ¦   ¦   "exec '!time ./%<'
-    ¦   elseif &filetype == 'cpp'
-    ¦   ¦   ¦   exec '!g++ % -o %<'
-    ¦   ¦   ¦   "exec '!time ./%<'
-    ¦   elseif &filetype == 'python'
-    ¦   ¦   ¦   exec '!python %'
-    ¦   ¦   ¦   "exec '!time python %'
-    ¦   elseif &filetype == 'sh'
-    ¦   ¦   ¦   :!bash %
-    ¦   ¦   ¦   ":!time bash %
-    ¦   endif
-endfunc
-
 let mapleader=','
 map <F4> <leader>ci <CR>
 
-" vim-go custom mappings
-"au FileType go nmap <Leader>s <Plug>(go-implements)
-"au FileType go nmap <Leader>i <Plug>(go-info)
-"au FileType go nmap <Leader>gd <Plug>(go-doc)
-"au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
-"au FileType go nmap <leader>r <Plug>(go-run)
-"au FileType go nmap <leader>b <Plug>(go-build)
-"au FileType go nmap <leader>t <Plug>(go-test)
-"au FileType go nmap <leader>c <Plug>(go-coverage)
-"au FileType go nmap <Leader>ds <Plug>(go-def-split)
-"au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
-"au FileType go nmap <Leader>dt <Plug>(go-def-tab)
-"au FileType go nmap <Leader>e <Plug>(go-rename)
+func SetPythonFileTitle()
+call setline(1, "#!/usr/bin/env python")
+call append(1, "# -*-coding:utf-8 -*-")
+normal G
+normal o
+normal o
+endfunc
+autocmd bufnewfile *.py call SetPythonFileTitle()
 
-"let g:go_fmt_command = "goimports"
+" 折叠代码
+set foldmethod=indent
+set foldlevel=99
+nnoremap <space> za
+
+" YCM 配色
+"highlight PMenu ctermfg=15 ctermbg=60 guifg=#2D2E27 guibg=#E8E8E3
+"highlight PmenuSel cterm=bold,reverse ctermfg=81 ctermbg=234 gui=bold,reverse guifg=#66d9ef guibg=#272822
+highlight PMenu ctermfg=255 ctermbg=240 guifg=#2D2E27 guibg=#E8E8E3
+highlight PmenuSel cterm=bold,reverse ctermfg=81 ctermbg=234 gui=bold,reverse guifg=#66d9ef guibg=#272822
+
+"autocmd BufWritePost *.py call Flake8()
