@@ -10,10 +10,10 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " vim 插件管理工具
-"Plugin 'VundleVim/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
 
 " 自动补全工具
-"Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 
 " 美化状态栏 和 主题
 Plugin 'vim-airline/vim-airline'
@@ -75,14 +75,25 @@ let NERDTreeWinSize=25
 let mapleader=','
 map <F4> <leader>ci <CR>
 
-func SetPythonFileTitle()
-call setline(1, "#!/usr/bin/env python")
-call append(1, "# -*-coding:utf-8 -*-")
-normal G
-normal o
-normal o
+" 定义函数AutoSetFileHead，自动插入文件头
+autocmd BufNewFile *.sh,*.py exec ":call AutoSetFileHead()"
+function! AutoSetFileHead()
+    "如果文件类型为.sh文件
+    if &filetype == 'sh'
+        call setline(1, "\#!/bin/bash")
+    endif
+
+    "如果文件类型为python
+    if &filetype == 'python'
+        " call setline(1, "\#!/usr/bin/env python")
+        " call append(1, "\# encoding: utf-8")
+        call setline(1, "\# -*- coding: utf-8 -*-")
+    endif
+
+    normal G
+    normal o
+    normal o
 endfunc
-autocmd bufnewfile *.py call SetPythonFileTitle()
 
 " 折叠代码
 set foldmethod=indent
@@ -96,3 +107,11 @@ highlight PMenu ctermfg=255 ctermbg=240 guifg=#2D2E27 guibg=#E8E8E3
 highlight PmenuSel cterm=bold,reverse ctermfg=81 ctermbg=234 gui=bold,reverse guifg=#66d9ef guibg=#272822
 
 "autocmd BufWritePost *.py call Flake8()
+
+" 设置 退出vim后，内容显示在终端屏幕, 可以用于查看和复制
+set t_ti= t_te=
+
+" history存储容量
+set history=2000
+
+set nonumber
