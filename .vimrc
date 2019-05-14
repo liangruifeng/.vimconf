@@ -113,3 +113,7 @@ map <F4> <leader>ci <CR>
 "au FileType go nmap <Leader>e <Plug>(go-rename)
 
 "let g:go_fmt_command = "goimports"
+
+"add yaml stuffs
+au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
