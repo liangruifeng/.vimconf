@@ -29,6 +29,14 @@ Plugin 'scrooloose/nerdtree'
 " python pep8检查
 Plugin 'nvie/vim-flake8'
 
+" 代码格式化
+"Plugin 'Chiel92/vim-autoformat'
+"
+"let g:formatdef_harttle = '"astyle --style=attach --pad-oper"'
+"let g:formatters_cpp = ['harttle']
+"let g:formatters_java = ['harttle']
+"noremap <F3> :Autoformat<CR>
+
 call vundle#end()
 filetype plugin indent on
 
@@ -89,11 +97,47 @@ function! AutoSetFileHead()
         " call append(1, "\# encoding: utf-8")
         call setline(1, "\# -*- coding: utf-8 -*-")
     endif
-
+    
     normal G
     normal o
     normal o
 endfunc
+
+map <F4> ms:call AddAuthor()<cr>'s
+function AddAuthor()
+    let n=1
+    while n < 5
+        let line = getline(n)
+        if line =~'^\s*\*\s*\S*Last\s*modified\s*:\s*\S*.*'
+            call UpdateTitle()
+            return
+        endif
+        let n = n + 1
+    endwhile
+    call AddTitle()
+endfunction
+
+function UpdateTitle()
+    normal m'
+    execute '/* Last modified\s*:/s@:.*$@\=strftime(": %Y-%m-%d %H:%M")@'
+    normal "
+    normal mk
+    execute '/* Filename\s*:/s@:.*$@\=": ".expand("%:t")@'
+    execute "noh"
+    normal 'k
+    echohl WarningMsg | echo "Successful in updating the copy right." | echohl None
+endfunction
+
+function AddTitle()
+    call append(2,'"""')
+    call append(3,"@author: liangruifeng")
+    call append(4,"@email: liang.ruif3ng@gmail.com")
+    call append(5,"@filename: ".expand("%:t"))
+    call append(6,"@description: ")
+    call append(7,"@last modified: ".strftime("%Y-%m-%d %H:%M"))
+    call append(8,'"""')
+    echohl WarningMsg | echo "Successful in adding the copyright." | echohl None
+endfunction
 
 " 折叠代码
 set foldmethod=indent
@@ -115,3 +159,6 @@ set t_ti= t_te=
 set history=2000
 
 set nonumber
+
+
+
