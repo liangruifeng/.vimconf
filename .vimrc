@@ -12,9 +12,6 @@ call vundle#begin()
 " vim 插件管理工具
 Plugin 'VundleVim/Vundle.vim'
 
-" 自动补全工具
-Plugin 'Valloric/YouCompleteMe'
-
 " 美化状态栏 和 主题
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
